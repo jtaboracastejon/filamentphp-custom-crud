@@ -2,16 +2,25 @@
 
 namespace App\Livewire\Books;
 
+use App\Filament\Pages\Books\ListBooks;
 use App\Models\Book;
+use Filament\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 
-class CreateBook extends Component implements HasForms
+class CreateBook extends Component implements HasForms, HasActions
 {
+    use InteractsWithActions;
     use InteractsWithForms;
 
     public ?array $data = [];
@@ -26,33 +35,66 @@ class CreateBook extends Component implements HasForms
         return $form
             ->schema([
                 Forms\Components\TextInput::make('original_title')
-                    ->required(),
+                    ->label('Original Title')
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('es_title')
-                    ->required(),
+                    ->label('Spanish Title')
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('author')
+                    ->label('Author')
                     ->required(),
-                Forms\Components\TextInput::make('genre')
-                    ->required(),
+                Select::make('genre')
+                ->label('Genre')
+                ->options([
+                    'fantasy' => 'Fantasy',
+                    'sci-fi' => 'Sci-Fi',
+                    'mystery' => 'Mystery',
+                    'horror' => 'Horror',
+                    'romance' => 'Romance',
+                    'non-fiction' => 'Non-Fiction',
+                    'other' => 'Other',
+                ])
+                ->required()
+                ->searchable(),
                 Forms\Components\TextInput::make('year')
-                    ->required(),
-                Forms\Components\TextInput::make('synopsis')
-                    ->required(),
-                Forms\Components\TextInput::make('cover')
-                    ->required(),
-                Forms\Components\TextInput::make('cover_file_names')
-                    ->required(),
+                    ->label('Year')
+                    ->required()
+                    ->numeric()
+                    ->mask(mask: '9999'),
+                Textarea::make(name: 'synopsis')
+                    ->label(label: 'Synopsis')
+                    ->required()
+                    ->maxLength(length: 255)
+                    ->columnSpanFull(),
+                FileUpload::make('cover')
+                    ->label('Cover')
+                    ->image()
+                    ->required()
+                    ->storeFileNamesIn(statePath: 'cover_file_names')
+                    ->columnSpanFull(),
             ])
+            ->columns(3)
             ->statePath('data')
             ->model(Book::class);
     }
 
-    public function create(): void
+    public function create()
     {
         $data = $this->form->getState();
 
         $record = Book::create($data);
 
         $this->form->model($record)->saveRelationships();
+
+        $notification = Notification::make()
+            ->success()
+            ->title(title: 'Created');
+
+        $notification->send();
+
+        return $this->redirect(ListBooks::getUrl());
     }
 
     public function render(): View
