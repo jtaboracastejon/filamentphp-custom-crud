@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Books;
 
+use App\Filament\Pages\Books\EditBook;
 use App\Models\Book;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -12,6 +13,7 @@ use Filament\Tables\Table;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\Action;
 
 class ListBooks extends Component implements HasForms, HasTable
 {
@@ -52,8 +54,10 @@ class ListBooks extends Component implements HasForms, HasTable
                 //
             ])
             ->actions([
-                //
-            ])
+                Action::make('edit')
+                    ->url(url: fn (Book $record): string => EditBook::getUrl(["record" => $record->getKey()]))
+                    ->icon('heroicon-o-pencil-square'),
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     //
