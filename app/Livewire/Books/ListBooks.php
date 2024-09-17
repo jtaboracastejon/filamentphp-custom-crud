@@ -15,6 +15,7 @@ use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\DeleteBulkAction;
 
 class ListBooks extends Component implements HasForms, HasTable
 {
@@ -65,7 +66,7 @@ class ListBooks extends Component implements HasForms, HasTable
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    //
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
