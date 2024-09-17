@@ -77,7 +77,11 @@ class ViewBook extends Component implements HasForms
                     ->downloadable()
                     ->storeFileNamesIn(statePath: 'cover_file_names')
                     ->columnSpanFull()
-                    ->disabled(),
+                    ->disabled()
+                    ->visibility('private')
+                    ->directory('form-attachments')
+                    ->disk('local')
+                    ->multiple(),
             ])
             ->columns(3)
             ->statePath('data')
