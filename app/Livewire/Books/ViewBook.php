@@ -72,8 +72,8 @@ class ViewBook extends Component implements HasForms
                     ->disabled(),
                 FileUpload::make('cover')
                     ->label('Cover')
-                    ->image()
                     ->required()
+                    ->openable()
                     ->downloadable()
                     ->storeFileNamesIn(statePath: 'cover_file_names')
                     ->columnSpanFull()

@@ -30,6 +30,7 @@ class EditBook extends Component implements HasForms
 
     public function form(Form $form): Form
     {
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('original_title')
@@ -68,11 +69,11 @@ class EditBook extends Component implements HasForms
                     ->columnSpanFull(),
                 FileUpload::make('cover')
                     ->label('Cover')
-                    ->image()
                     ->required()
                     ->downloadable()
+                    ->openable()
                     ->storeFileNamesIn(statePath: 'cover_file_names')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
             ])
             ->columns(3)
             ->statePath('data')

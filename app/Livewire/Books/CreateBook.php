@@ -70,7 +70,6 @@ class CreateBook extends Component implements HasForms, HasActions
                     ->columnSpanFull(),
                 FileUpload::make('cover')
                     ->label('Cover')
-                    ->image()
                     ->required()
                     ->storeFileNamesIn(statePath: 'cover_file_names')
                     ->columnSpanFull(),
