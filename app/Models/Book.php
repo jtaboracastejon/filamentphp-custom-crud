@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\BookObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(classes: [BookObserver::class])]
 class Book extends Model
 {
     use HasFactory;
