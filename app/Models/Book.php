@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,5 +19,10 @@ class Book extends Model
         'synopsis',
         'cover',
         'cover_file_names',
+    ];
+
+    protected $casts = [
+        'cover' => 'array',
+        'cover_file_names' => 'array',
     ];
 }

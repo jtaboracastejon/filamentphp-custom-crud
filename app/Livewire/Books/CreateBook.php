@@ -76,6 +76,7 @@ class CreateBook extends Component implements HasForms, HasActions
                     ->visibility('private')
                     ->directory('form-attachments')
                     ->disk('local')
+                    ->multiple()
             ])
             ->columns(3)
             ->statePath('data')

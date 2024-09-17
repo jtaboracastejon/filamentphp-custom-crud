@@ -77,6 +77,7 @@ class EditBook extends Component implements HasForms
                     ->visibility('private')
                     ->directory('form-attachments')
                     ->disk('local')
+                    ->multiple()
             ])
             ->columns(3)
             ->statePath('data')
