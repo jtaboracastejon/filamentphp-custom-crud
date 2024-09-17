@@ -72,7 +72,10 @@ class CreateBook extends Component implements HasForms, HasActions
                     ->label('Cover')
                     ->required()
                     ->storeFileNamesIn(statePath: 'cover_file_names')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->visibility('private')
+                    ->directory('form-attachments')
+                    ->disk('local')
             ])
             ->columns(3)
             ->statePath('data')
