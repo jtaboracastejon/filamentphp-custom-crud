@@ -4,6 +4,9 @@ namespace App\Livewire\Books;
 
 use App\Models\Book;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -26,33 +29,59 @@ class ViewBook extends Component implements HasForms
     public function form(Form $form): Form
     {
         return $form
-            ->schema([
+            ->schema(components: [
                 Forms\Components\TextInput::make('original_title')
-                    ->required(),
+                    ->label('Original Title')
+                    ->required()
+                    ->columnSpanFull()
+                    ->disabled(),
                 Forms\Components\TextInput::make('es_title')
-                    ->required(),
+                    ->label('Spanish Title')
+                    ->required()
+                    ->columnSpanFull()
+                    ->disabled(),
                 Forms\Components\TextInput::make('author')
-                    ->required(),
-                Forms\Components\TextInput::make('genre')
-                    ->required(),
+                    ->label('Author')
+                    ->required()
+                    ->disabled(),
+                Select::make('genre')
+                    ->label('Genre')
+                    ->options([
+                        'fantasy' => 'Fantasy',
+                        'sci-fi' => 'Sci-Fi',
+                        'mystery' => 'Mystery',
+                        'horror' => 'Horror',
+                        'romance' => 'Romance',
+                        'non-fiction' => 'Non-Fiction',
+                        'other' => 'Other',
+                    ])
+                    ->required()
+                    ->searchable()
+                    ->disabled(),
                 Forms\Components\TextInput::make('year')
-                    ->required(),
-                Forms\Components\TextInput::make('synopsis')
-                    ->required(),
-                Forms\Components\TextInput::make('cover')
-                    ->required(),
-                Forms\Components\TextInput::make('cover_file_names')
-                    ->required(),
+                    ->label('Year')
+                    ->required()
+                    ->numeric()
+                    ->mask(mask: '9999')
+                    ->disabled(),
+                Textarea::make(name: 'synopsis')
+                    ->label(label: 'Synopsis')
+                    ->required()
+                    ->maxLength(length: 255)
+                    ->columnSpanFull()
+                    ->disabled(),
+                FileUpload::make('cover')
+                    ->label('Cover')
+                    ->image()
+                    ->required()
+                    ->downloadable()
+                    ->storeFileNamesIn(statePath: 'cover_file_names')
+                    ->columnSpanFull()
+                    ->disabled(),
             ])
+            ->columns(3)
             ->statePath('data')
             ->model($this->record);
-    }
-
-    public function save(): void
-    {
-        $data = $this->form->getState();
-
-        $this->record->update($data);
     }
 
     public function render(): View
