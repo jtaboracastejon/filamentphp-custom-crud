@@ -3,6 +3,7 @@
 namespace App\Livewire\Books;
 
 use App\Filament\Pages\Books\EditBook;
+use App\Filament\Pages\Books\ViewBook;
 use App\Models\Book;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -55,9 +56,13 @@ class ListBooks extends Component implements HasForms, HasTable
             ])
             ->actions([
                 Action::make('edit')
-                    ->url(url: fn (Book $record): string => EditBook::getUrl(["record" => $record->getKey()]))
+                    ->url(url: fn(Book $record): string => EditBook::getUrl(["record" => $record->getKey()]))
                     ->icon('heroicon-o-pencil-square'),
-                ])
+                Action::make(name: 'view')
+                    ->url(url: fn(Book $record): string => ViewBook::getUrl(parameters: ["record" => $record->getKey()]))
+                    ->icon(icon: 'heroicon-o-eye')
+                    ->color(color: 'gray'),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     //
